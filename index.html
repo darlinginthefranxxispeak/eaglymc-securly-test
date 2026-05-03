@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eaglercraft 1.20 WASM</title>
+    <style>
+        /* Fill the screen and hide scrollbars */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* Fullscreen iframe */
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- The game will be injected here -->
+    <iframe 
+        id="game-loader"
+        src="about:blank" 
+        allow="autoplay; fullscreen; keyboard-quotas; gamepad; pointer-lock; clipboard-write; microphone" 
+        allowfullscreen="true">
+    </iframe>
+
+    <script>
+        (function() {
+            // The 1.20 WASM Link
+            const targetURL = "https://eaglercraft.dev/clients/EaglyMC%201.20%20WASM/index.html";
+
+            // We wrap the logic in a Blob to mask the source loading process
+            const loaderScript = `
+                const frame = document.getElementById('game-loader');
+                frame.src = "${targetURL}";
+            `;
+
+            const blob = new Blob([loaderScript], { type: 'text/javascript' });
+            const scriptUrl = URL.createObjectURL(blob);
+
+            // Create a temporary script tag to run our Blob
+            const newScript = document.createElement('script');
+            newScript.src = scriptUrl;
+            document.body.appendChild(newScript);
+
+            // Focus fix for controls
+            const gameFrame = document.getElementById('game-loader');
+            window.onclick = function() {
+                gameFrame.focus();
+            };
+            
+            // Clean up the blob URL after it loads
+            newScript.onload = () => URL.revokeObjectURL(scriptUrl);
+        })();
+    </script>
+
+</body>
+</html>
