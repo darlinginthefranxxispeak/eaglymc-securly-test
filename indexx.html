@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EaglyMC - Fullscreen</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- We use srcdoc to wrap the game; this is more stable for Eaglercraft than a Blob -->
+    <iframe 
+        id="game-frame"
+        allow="autoplay; fullscreen; keyboard-quotas; gamepad; pointer-lock; clipboard-write" 
+        allowfullscreen="true">
+    </iframe>
+
+    <script>
+        (function() {
+            const gameUrl = "https://client.eaglercraft.win/eagler-files/modded/1.8/EaglyMC/index.html";
+            
+            // This creates the internal environment without breaking the game engine
+            const frame = document.getElementById('game-frame');
+            frame.src = gameUrl;
+
+            // Ensure focus for keyboard controls
+            window.onclick = function() {
+                frame.focus();
+            };
+
+            // Force focus on load
+            frame.onload = function() {
+                frame.focus();
+            };
+        })();
+    </script>
+
+</body>
+</html>
